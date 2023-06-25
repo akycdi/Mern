@@ -6,14 +6,10 @@ var path = require('path');
 const cors = require('cors');
 app.use(cors());
 app.use(bodyParser.json());
-var cons = require('consolidate');
 
 app.use(express.static(path.join(__dirname, 'views')));
 
-// view engine setup
-// app.engine('html', cons.swig)
-// app.set('views', path.join(__dirname, 'views'));
-// app.set('view engine', 'html');
+
 
 let todos = [];
 

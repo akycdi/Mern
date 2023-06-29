@@ -1,5 +1,6 @@
 function todosCallback(data) {
     var parentElement = document.getElementById("parent");
+    parentElement.innerHTML=""
 
     for (var i = 0; i < data.length; i++) {
         var childElement = document.createElement("div");
@@ -22,7 +23,8 @@ function todosCallback(data) {
     }
 }
 
-function deleteDone(){
+function deleteDone(resp){
+    resp.json().then(todosCallback);
     console.log("delete done");
 }
 

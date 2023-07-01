@@ -1,92 +1,157 @@
 const express = require('express');
 const app = express();
-
 app.use(express.json());
+
+const bodyParser = require('body-parser');
+app.use(bodyParser.json());
+
+
+app.use(express.urlencoded({ extended: true }))
 
 let ADMINS = [];
 let USERS = [];
 let COURSES = [];
 
 
-async function checkCreds(data) {
-  await ADMINS.forEach(element => {
-    if (element.username === data.username && element.passowrd === data.passowrd) {
-      return true;
-    }
-  });
-  return false;
-}
+const adminAuthentication = (req, res, next) => {
+  const { username, password } = req.headers;
+  const admin = ADMINS.find(a => a.username === username && a.password === password);
+  if (admin) {
+    next();
+  } else {
+    res.status(403).json({ message: 'Admin authentication failed' });
+  }
+};
 
+
+//Admin
 app.post('/admin/signup', (req, res) => {
   let data = req.body;
-  ADMINS.push(data);
-  res.send('Admin created successfully');
-  console.log(ADMINS);
-});
-
-app.post('/admin/login', (req, res) => {
-  let data = req.headers;
-  if (checkCreds(data)) {
-    res.status(200).send('Logged in successfully');
+  const alreadyExistsAdmin = ADMINS.find(x => x.username === data.username);
+  if (alreadyExistsAdmin) {
+    res.status(403).json({ message: 'Admin already exists' });
   }
   else {
-    res.status(401).send('Invaid username or password');
+    ADMINS.push(data);
+    res.send(JSON.stringify({
+      message: 'Created in successfully'
+    }))
   }
 });
 
-app.post('/admin/courses', (req, res) => {
-  let auth = req.headers;
+app.post('/admin/login', adminAuthentication, (req, res) => {
+  res.json({ message: 'Logged in successfully' });
+})
+
+app.post('/admin/courses', adminAuthentication, (req, res) => {
+  const course = req.body;
+  course.id = Date.now();
+  COURSES.push(course);
+  res.json({ message: 'Course created successfully', courseId: course.id });
+});
+
+app.put('/admin/courses/:courseId', adminAuthentication, (req, res) => {
   let data = req.body;
-  data.id = Math.floor(Math.random() * 1000000);
-  if (checkCreds(auth)) {
-    COURSES.push(data);
-    const value = JSON.stringify({
-      message: 'Course created successfully',
-      courseId: data.id
-    })
-    res.status(200).send(value);
+  let ID = parseInt(req.params.courseId);
+
+  let index = COURSES.find(x => x.id === ID);
+
+
+  COURSES.forEach(element => {
+    if (element.id === ID) {
+      element.title = data.title;
+      element.description = data.description;
+      element.price = data.price;
+      element.imageLink = data.imageLink;
+      element.published = data.published;
+    }
+  });
+  res.send('Course updated successfully');
+});
+
+app.get('/admin/courses', adminAuthentication, (req, res) => {
+  res.send(JSON.stringify({
+    cources: COURSES
+  }))
+});
+
+const userAuthentication = (req, res, next) => {
+  const { username, password } = req.headers;
+  const admin = USERS.find(a => a.username === username && a.password === password);
+  if (admin) {
+    next();
+  } else {
+    res.status(403).json({ message: 'User authentication failed' });
+  }
+};
+
+
+
+//User 
+app.post('/user/signup', (req, res) => {
+  let data = req.header;
+  const alreadyExistsUser = USERS.find(x => {
+    x.username === data.username;
+  })
+  if (alreadyExistsUser) {
+    res.status(403).json({ message: 'Admin already exists' });
   }
   else {
-    res.status(401).send('Invaid username or password');
+    USERS.push(data);
+    res.send(JSON.stringify({
+      message: "User created successfully"
+    }));
   }
 });
 
-app.put('/admin/courses/:courseId', (req, res) => {
+
+app.post('/user/login', userAuthentication, (req, res) => {
+  res.send(JSON.stringify({
+    message: 'Logged in successfully'
+  }))
+});
+
+app.get('/user/courses', userAuthentication, (req, res) => {
+  res.send(JSON.stringify({
+    courses: COURSES
+  }))
+})
+
+app.post('/users/courses/:courseId', userAuthentication, (req, res) => {
+  let ID = parseInt(req.params.courseId);
+  COURSES.forEach(element => {
+    if (element.id === ID) {
+      element.isPurchased = true;
+      res.send(JSON.stringify({
+        message: "Cources purchased successfull",
+        id: element.id
+      }))
+    }
+  });
+  res.send(JSON.stringify({
+    message: "Cannot find the course ID"
+  }))
+}
+)
+
+app.get('/users/purchasedCourses', userAuthentication, (req, res) => {
+
   let auth = req.headers;
-
-  if (checkCreds(auth)) {
-    let data = req.body;
-    let ID = parseInt(req.params.courseId);
-    console.log(ID);
-    console.log(COURSES);
-
-    COURSES.forEach(element => {
-      if (element.id === ID) {
-        element.title = data.title;
-        element.description = data.description;
-        element.price = data.price;
-        element.imageLink = data.imageLink;
-        element.published = data.published;
-      }
-    });
-    console.log(COURSES);
-    res.send('Course updated successfully');
+  let purchasedCources = [];
+  if (checkCredsUser(auth)) {
+    purchasedCources = COURSES.some((cources) => { cources.isPurchased === true })
+    res.send(JSON.stringify({
+      cources: purchasedCources
+    }))
   }
   else {
-    res.status(401).send('Invalid Creds');
+    res.status(401).send(JSON.stringify({
+      message: "Invalid Creds"
+    }))
   }
-});
 
+})
 
-app.get('/admin/courses', (req, res) => {
-  let auth = req.headers;
-  if (checkCreds(auth)) {
-    res.send(COURSES);
-  }
-  else {
-    res.status(401).send('Invalid Creds')
-  }
-});
 
 app.listen(3000, () => {
   console.log('Server is listening on port 3000');

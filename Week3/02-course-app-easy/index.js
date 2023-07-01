@@ -88,51 +88,60 @@ const userAuthentication = (req, res, next) => {
 
 
 //User 
-app.post('/user/signup', (req, res) => {
-  let data = req.header;
-  const alreadyExistsUser = USERS.find(x => {
-    x.username === data.username;
-  })
+app.post('/users/signup', (req, res) => {
+  let data = req.body;
+  const alreadyExistsUser = USERS.find(x => x.username === data.username);
   if (alreadyExistsUser) {
-    res.status(403).json({ message: 'Admin already exists' });
+    res.status(403).json({ message: 'User already exists' });
   }
   else {
-    USERS.push(data);
+    const user = {
+      username: data.username,
+      password: data.password,
+      purchasedCources: []
+    }
+    USERS.push(user);
     res.send(JSON.stringify({
-      message: "User created successfully"
-    }));
+      message: 'Created in successfully'
+    }))
   }
 });
 
-
-app.post('/user/login', userAuthentication, (req, res) => {
+app.post('/users/login', userAuthentication, (req, res) => {
+  console.log(USERS);
   res.send(JSON.stringify({
     message: 'Logged in successfully'
   }))
 });
 
-app.get('/user/courses', userAuthentication, (req, res) => {
+app.get('/users/courses', userAuthentication, (req, res) => {
   res.send(JSON.stringify({
     courses: COURSES
   }))
 })
 
+// app.post('/users/courses/:courseId', userAuthentication, (req, res) => {
+//   let courseId = parseInt(req.params.courseId);
+//   let course = COURSES.find(element => { element.id === courseId });
+//   if (course) {
+//     req.user.purchasedCourses.push(courseId);
+//     res.json({ message: 'Course purchased successfully' });
+//   }
+//   else {
+//     res.status(404).json({ message: 'Course not found or not available' });
+//   }
+// })
+
 app.post('/users/courses/:courseId', userAuthentication, (req, res) => {
-  let ID = parseInt(req.params.courseId);
-  COURSES.forEach(element => {
-    if (element.id === ID) {
-      element.isPurchased = true;
-      res.send(JSON.stringify({
-        message: "Cources purchased successfull",
-        id: element.id
-      }))
-    }
-  });
-  res.send(JSON.stringify({
-    message: "Cannot find the course ID"
-  }))
-}
-)
+  const courseId = Number(req.params.courseId);
+  const course = COURSES.find(c => c.id === courseId && c.published);
+  if (course) {
+    req.user.purchasedCourses.push(courseId);
+    res.json({ message: 'Course purchased successfully' });
+  } else {
+    res.status(404).json({ message: 'Course not found or not available' });
+  }
+});
 
 app.get('/users/purchasedCourses', userAuthentication, (req, res) => {
 
@@ -149,9 +158,7 @@ app.get('/users/purchasedCourses', userAuthentication, (req, res) => {
       message: "Invalid Creds"
     }))
   }
-
 })
-
 
 app.listen(3000, () => {
   console.log('Server is listening on port 3000');

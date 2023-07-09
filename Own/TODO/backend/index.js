@@ -1,25 +1,40 @@
 const express = require('express');
 const bodyParser = require('body-parser');
+const jwt = require('jsonwebtoken')
+require('dotenv').config()
 
-const app = express();
+const app = express()
 app.use(express.json())
 
+const secretkey = 'process.env.secretkey'
 
 const TODO = [];
 const USERS = [];
 
+const createToken = (data) => {
+    return jwt.sign({ username: data.username }, secretkey, { expiresIn: 86400 });
+}
 
-function authentation(req, res, next) {
-    let { username, password } = req.headers;
-    USERS.forEach(element => {
-        if (element.username == username && element.password == password) {
+
+function authentication(req, res, next) {
+    const auth = req.headers.authorization;
+    if (auth) {
+        const token = auth.split(' ')[1]
+        jwt.verify(token, secretkey, (err, user) => {
+            if (err) {
+                res.status(403).json({
+                    message: "Inavalid Username or Passwrod"
+                })
+            }
             next();
-        }
-    })
+        })
+    }
     res.json({
         message: "Invalid Username or passowrd"
     }).send();
 }
+
+
 
 app.post('/signup', (req, res) => {
     let data = req.headers;
@@ -32,13 +47,15 @@ app.post('/signup', (req, res) => {
         return
     }
     USERS.push(data);
+    const token = createToken(data);
     res.json({
         message: 'Created username',
-        id: data.id
+        id: data.id,
+        token: token
     })
 })
 
-app.post('/login', authentation, (req, res) => {
+app.post('/login', authentication, (req, res) => {
     res.json({
         message: 'Login succesfull'
     }).send()

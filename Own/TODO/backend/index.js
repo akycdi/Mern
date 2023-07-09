@@ -6,7 +6,7 @@ require('dotenv').config()
 const app = express()
 app.use(express.json())
 
-const secretkey = 'process.env.secretkey'
+const secretkey = process.env.secretkey
 
 const TODO = [];
 const USERS = [];
@@ -15,23 +15,25 @@ const createToken = (data) => {
     return jwt.sign({ username: data.username }, secretkey, { expiresIn: 86400 });
 }
 
-
 function authentication(req, res, next) {
     const auth = req.headers.authorization;
     if (auth) {
         const token = auth.split(' ')[1]
         jwt.verify(token, secretkey, (err, user) => {
             if (err) {
-                res.status(403).json({
-                    message: "Inavalid Username or Passwrod"
+                return res.status(403).json({
+                    message: "Authentication failed"
                 })
             }
+            req.user = user;
             next();
         })
     }
-    res.json({
-        message: "Invalid Username or passowrd"
-    }).send();
+    else {
+        res.json({
+            message: "Invalid Username or passowrd"
+        }).send();
+    }
 }
 
 
@@ -56,20 +58,72 @@ app.post('/signup', (req, res) => {
 })
 
 app.post('/login', authentication, (req, res) => {
-    res.json({
-        message: 'Login succesfull'
-    }).send()
+    let username = req.headers.username;
+    if (username === req.user.username) {
+        res.json({
+            message: 'Login succesfull',
+            user: req.user.username
+        }).send()
+    }
+    else {
+        res.status(403).json({
+            message: " Invalid username"
+        })
+    }
 })
 
+app.post('/todo/create', authentication, (req, res) => {
+    const data = req.body;
+    data.id = Date.now();
+    TODO.push(data);
+    res.json({
+        message: 'Added Todo',
+        id: data.id,
+        user: req.user
+    })
+})
 
-
-
-
-
-app.get('/todo', (req, res) => {
-
+app.get('/todo', authentication, (req, res) => {
+    res.json({
+        todo: TODO
+    });
 });
 
+app.delete('/todo/delete/:id', authentication, (req, res) => {
+    const id = parseInt(req.params.id);
+    let index = TODO.findIndex(x => x.id === id)
 
+    if (index === -1) {
+        res.status(404).json({
+            message: "TODO not found",
+            id: id
+        });
+    }
+    else {
+        TODO.splice(index, 1);
+        res.status(200).send({
+            TODO: TODO
+        });
+    }
+})
+
+app.put('/todo/update/:id', authentication, (req, res) => {
+    const id = parseInt(req.params.id);
+    let index = TODO.findIndex(x => x.id === id)
+
+    if (index === -1) {
+        res.status(404).json({
+            message: "TODO not found",
+            id: id
+        });
+    }
+    else {
+        TODO[index].title = req.body.title;
+        TODO[index].description = req.body.description;
+        res.status(200).send({
+            TODO: TODO
+        });
+    }
+})
 
 app.listen(3000, () => { console.log("listing on port 3000") });

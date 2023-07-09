@@ -96,9 +96,9 @@ app.post('/users/signup', (req, res) => {
   }
   else {
     const user = {
-      username: data.username,
-      password: data.password,
-      purchasedCources: []
+      username: req.body.username,
+      password: req.body.password,
+      purchasedCourses: []
     }
     USERS.push(user);
     res.send(JSON.stringify({
@@ -114,11 +114,22 @@ app.post('/users/login', userAuthentication, (req, res) => {
   }))
 });
 
+// app.get('/users/courses', userAuthentication, (req, res) => {
+//   res.send(JSON.stringify({
+//     courses: COURSES
+//   }))
+// })
+
 app.get('/users/courses', userAuthentication, (req, res) => {
-  res.send(JSON.stringify({
-    courses: COURSES
-  }))
-})
+  // COURSES.filter(c => c.published)
+  let filteredCourses = [];
+  for (let i = 0; i<COURSES.length; i++) {
+    if (COURSES[i].published) {
+      filteredCourses.push(COURSES[i]);
+    }
+  }
+  res.json({ courses: filteredCourses });
+});
 
 // app.post('/users/courses/:courseId', userAuthentication, (req, res) => {
 //   let courseId = parseInt(req.params.courseId);
@@ -144,22 +155,15 @@ app.post('/users/courses/:courseId', userAuthentication, (req, res) => {
 });
 
 app.get('/users/purchasedCourses', userAuthentication, (req, res) => {
-
-  let auth = req.headers;
-  let purchasedCources = [];
-  if (checkCredsUser(auth)) {
-    purchasedCources = COURSES.some((cources) => { cources.isPurchased === true })
-    res.send(JSON.stringify({
-      cources: purchasedCources
-    }))
+  var purchasedCourseIds = req.user.purchasedCourses;[1, 4];
+  var purchasedCourses = [];
+  for (let i = 0; i < COURSES.length; i++) {
+    if (purchasedCourseIds.indexOf(COURSES[i].id) !== -1) {
+      purchasedCourses.push(COURSES[i]);
+    }
   }
-  else {
-    res.status(401).send(JSON.stringify({
-      message: "Invalid Creds"
-    }))
-  }
-})
-
+  res.json({ purchasedCourses });
+});
 app.listen(3000, () => {
   console.log('Server is listening on port 3000');
 });

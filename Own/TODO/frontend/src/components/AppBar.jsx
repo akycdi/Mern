@@ -9,6 +9,9 @@ function AppBarRender() {
     const navigateToLogin = () => {
         navigate('/login');
     };
+    const navigateToTodo= () => {
+        navigate('/todo');
+    };
     return (
         <AppBar position="static" >
             <Toolbar>

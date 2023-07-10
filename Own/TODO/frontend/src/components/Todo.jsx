@@ -29,7 +29,6 @@ function Todo(params) {
                 display: "flex",
                 justifyContent: "center",
                 alignItems: "center",
-                height: '100vh'
             }}>
                 <Card sx={{ minWidth: 500, minheigth: 500 }} style={{
                     width: 400,

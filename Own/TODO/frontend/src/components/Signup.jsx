@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import Button from '@mui/material/Button';
-import { TextField, Card, Typography, CardContent } from "@mui/material";
+import { TextField, Card, CardContent } from "@mui/material";
 
 
 function Signup(params) {
@@ -8,7 +8,7 @@ function Signup(params) {
     const [password, setPassword] = useState("");
 
     function signUP(params) {
-        
+        console.log("Log is working");
     }
 
     return (
@@ -16,8 +16,8 @@ function Signup(params) {
             <Card>
                 <CardContent>
                     <form>
-                        <TextField id={username} label="Title" variant="outlined" value={username} onChange={(e) => setUsername(e.target.value)} type="text" placeholder="Title" />
-                        <TextField id={password} label="Description" variant="outlined" value={password} onChange={(e) => setPassword(e.target.value)} type="text" placeholder="Description" />
+                        <TextField id={username} label="Username" variant="outlined" value={username} onChange={(e) => setUsername(e.target.value)} type="text" placeholder="Username" />
+                        <TextField id={password} label="Password" variant="outlined" value={password} onChange={(e) => setPassword(e.target.value)} type="text" placeholder="Password" />
                         <br></br><br></br>
                         <Button variant="contained" onClick={signUP}>Submit</Button>
                     </form>

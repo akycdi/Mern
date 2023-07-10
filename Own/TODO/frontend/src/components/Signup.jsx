@@ -6,9 +6,26 @@ import { TextField, Card, CardContent } from "@mui/material";
 function Signup(params) {
     const [username, setUsername] = useState("");
     const [password, setPassword] = useState("");
+    let token = "";
 
-    function signUP(params) {
-        console.log("Log is working");
+    function signUp() {
+        fetch("http://localhost:3000/signup", {
+            method: "POST",
+            body: JSON.stringify({
+                title: "Hello Title",
+                description: "Hello Description"
+            }),
+            headers: {
+                "username": username,
+                "password": password,
+            }
+        }).then(todosCallback)
+    }
+    function todosCallback(response) {
+        response.json().then((data) => {
+            token = data.token;
+            console.log(token);
+        })
     }
 
     return (
@@ -19,7 +36,7 @@ function Signup(params) {
                         <TextField id={username} label="Username" variant="outlined" value={username} onChange={(e) => setUsername(e.target.value)} type="text" placeholder="Username" />
                         <TextField id={password} label="Password" variant="outlined" value={password} onChange={(e) => setPassword(e.target.value)} type="text" placeholder="Password" />
                         <br></br><br></br>
-                        <Button variant="contained" onClick={signUP}>Submit</Button>
+                        <Button variant="contained" onClick={signUp}>Submit</Button>
                     </form>
                 </CardContent>
             </Card>
@@ -28,6 +45,5 @@ function Signup(params) {
     )
 }
 
-const token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6IkFydW4iLCJpYXQiOjE2ODg5MzM1NTEsImV4cCI6MTY4OTAxOTk1MX0.t0SZIMwsAFh5OoPA_WmLlyT3Dhi9BLbRHu8d5p-XmdE"
 
 export default Signup;

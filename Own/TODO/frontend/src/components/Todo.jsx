@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import Button from '@mui/material/Button';
-import { TextField, Card ,Typography } from "@mui/material";
+import { TextField, Card, Typography, CardContent } from "@mui/material";
 
 
 function Todo(params) {
@@ -25,26 +25,28 @@ function Todo(params) {
 
     return (
         <div>
-            <Typography  sx={{ fontSize: 50 }} color="text.secondary" >Todo</Typography>
             <div style={{
                 display: "flex",
                 justifyContent: "center",
+                alignItems: "center",
+                height: '100vh'
             }}>
-                <Card style={{
+                <Card sx={{ minWidth: 500, minheigth: 500 }} style={{
                     width: 400,
                     height: 200,
                     padding: 10,
                     marginBottom: 10,
                     display: "flex",
                     justifyContent: "center",
-                    border: "1px solid black",
                 }}>
-                    <form>
-                        <TextField id={title} label="Title" variant="outlined" value={title} onChange={(e) => setTitle(e.target.value)} type="text" placeholder="Title" />
-                        <TextField id={description} label="Description" variant="outlined" value={description} onChange={(e) => setDescription(e.target.value)} type="text" placeholder="Description" />
-                        <br></br><br></br>
-                        <Button variant="contained" onClick={createTODO}>Submit</Button>
-                    </form>
+                    <CardContent>
+                        <form>
+                            <TextField id={title} label="Title" variant="outlined" value={title} onChange={(e) => setTitle(e.target.value)} type="text" placeholder="Title" />
+                            <TextField id={description} label="Description" variant="outlined" value={description} onChange={(e) => setDescription(e.target.value)} type="text" placeholder="Description" />
+                            <br></br><br></br>
+                            <Button variant="contained" onClick={createTODO}>Submit</Button>
+                        </form>
+                    </CardContent>
                 </Card>
             </div>
         </div>

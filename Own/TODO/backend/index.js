@@ -2,9 +2,11 @@ const express = require('express');
 const bodyParser = require('body-parser');
 const jwt = require('jsonwebtoken')
 require('dotenv').config()
+const cors  = require('cors')
 
 const app = express()
 app.use(express.json())
+app.use(cors())
 
 const secretkey = process.env.secretkey
 
@@ -35,8 +37,6 @@ function authentication(req, res, next) {
         }).send();
     }
 }
-
-
 
 app.post('/signup', (req, res) => {
     let data = req.headers;

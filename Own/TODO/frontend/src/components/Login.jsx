@@ -1,19 +1,21 @@
 import React, { useState, useEffect } from "react";
 import Button from '@mui/material/Button';
-import { TextField, Card, CardContent } from "@mui/material";
+import { TextField, Card, CardContent, Avatar } from "@mui/material";
 import { Routes, Route, useNavigate } from 'react-router-dom';
+import { blue } from "@mui/material/colors";
 
 function Login() {
-    const [username, setUsername] = useState("");
+    const [password, setUsername] = useState("");
     const navigate = useNavigate();
 
     function LoginButton() {
         fetch("http://localhost:3000/login", {
             method: "POST",
             headers: {
-                "username": username,
+                "username": localStorage.getItem("user"),
                 "content-type": "application/json",
                 "authorization": "Bearer " + localStorage.getItem("token"),
+                "password":password
             }
         }).then(loginCallback)
     }
@@ -30,6 +32,10 @@ function Login() {
         })
     }
 
+    if (localStorage.getItem("token")) {
+
+    }
+
     return (
         <div style={{
             display: "flex",
@@ -40,10 +46,25 @@ function Login() {
             <Card>
                 <CardContent>
                     <form>
-                        <TextField id={username} label="Username" variant="outlined" value={username} onChange={(e) => setUsername(e.target.value)} type="text" placeholder="Username" />
+                        <div style={{
+                            display: "flex",
+                            justifyContent: "center",
+                            alignItems: "center"
+                        }}>
+                            <Avatar sx={{ width: 100, height: 100, bgcolor: blue[500] }}>{localStorage.getItem("user")}</Avatar>
+                        </div>
+                        <br>
+                        </br>
+                        <TextField id={password} label="Password" variant="outlined" value={password} onChange={(e) => setUsername(e.target.value)} type="text" placeholder="Password" />
                         <br></br>
                         <br></br>
-                        <Button variant="contained" onClick={LoginButton}>Submit</Button>
+                        <div style={{
+                            display: "flex",
+                            justifyContent: "center",
+                            alignItems: "center"
+                        }}>
+                            <Button size="large" variant="contained" onClick={LoginButton} sx={{ width: 220, height: 50 }}>Submit</Button>
+                        </div>
                     </form>
                 </CardContent>
             </Card>

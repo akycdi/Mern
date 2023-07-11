@@ -14,28 +14,26 @@ const TODO = [];
 const USERS = [];
 
 const createToken = (data) => {
-    return jwt.sign({ username: data.username }, secretkey, { expiresIn: 86400 });
+    return jwt.sign({ username: data.username, password: data.password }, secretkey, { expiresIn: 86400 });
 }
 
 function authentication(req, res, next) {
     const auth = req.headers.authorization;
-    if (auth) {
-        const token = auth.split(' ')[1]
-        jwt.verify(token, secretkey, (err, user) => {
-            if (err) {
-                return res.status(403).json({
-                    message: "Authentication failed"
-                })
-            }
-            req.user = user;
-            next();
-        })
+
+    if (!auth) {
+        res.status(401).send();
     }
-    else {
-        res.json({
-            message: "Invalid Username or passowrd"
-        }).send();
-    }
+
+    const token = auth.split(' ')[1]
+    jwt.verify(token, secretkey, (err, user) => {
+        if (err) {
+            return res.status(403).json({
+                message: "Authentication failed"
+            })
+        }
+        req.user = user;
+        next();
+    })
 }
 
 app.post('/signup', (req, res) => {

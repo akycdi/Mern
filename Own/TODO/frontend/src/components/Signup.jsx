@@ -6,7 +6,15 @@ import { Routes, Route, useNavigate } from 'react-router-dom';
 function Signup() {
     const [username, setUsername] = useState("");
     const [password, setPassword] = useState("");
+    const [isAuth, setIsAuth] = useState("")
     const navigate = useNavigate();
+
+    useEffect(() => {
+        isLoggedIn()
+        if (isAuth) {
+            navigate('/todo');
+        }
+    })
 
     function signUp() {
         fetch("http://localhost:3000/signup", {
@@ -44,9 +52,43 @@ function Signup() {
         }
     }
 
-    return (
+    function isAuthCallBack(res) {
+        res.json().then((data) => {
+            if (res.ok) {
+                console.log(data);
+                setIsAuth(true)
+                return
+            }
+        }).catch((err) => {
+            console.log(err);
+        });
+    }
 
-        <div>
+
+    function isLoggedIn() {
+        if (!localStorage.getItem("token")) {
+            setIsAuth(false)
+        }
+        else {
+            fetch('http://localhost:3000/isAuthenticated', {
+                method: "GET",
+                headers: {
+                    "username": localStorage.getItem("user"),
+                    "content-type": "application/json",
+                    "authorization": "Bearer " + localStorage.getItem("token"),
+                }
+            }).then(isAuthCallBack)
+        }
+    }
+
+
+    return (
+        <div style={{
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
+            padding: 30,
+        }}>
             <Card>
                 <CardContent>
                     <form>
@@ -58,7 +100,6 @@ function Signup() {
                 </CardContent>
             </Card>
         </div>
-
     )
 }
 

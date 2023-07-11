@@ -19,7 +19,6 @@ const createToken = (data) => {
 
 function authentication(req, res, next) {
     const auth = req.headers.authorization;
-
     if (!auth) {
         res.status(401).send();
     }
@@ -126,10 +125,22 @@ app.put('/todo/update/:id', authentication, (req, res) => {
 })
 
 app.get('/isAuthenticated', authentication, (req, res) => {
-    res.json({
-        message: true,
-        user: req.user
+
+    let username = req.user.username;
+    let password = req.user.password;
+
+    USERS.forEach(element => {
+        if (element.username === username && element.password === password) {
+            res.json({
+                message: true,
+                user: req.user
+            }).send();
+        }
     })
+    res.status(403).json({
+        message: false,
+        user: req.user
+    });
 })
 
 

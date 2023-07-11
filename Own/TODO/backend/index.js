@@ -2,7 +2,7 @@ const express = require('express');
 const bodyParser = require('body-parser');
 const jwt = require('jsonwebtoken')
 require('dotenv').config()
-const cors  = require('cors')
+const cors = require('cors')
 const app = express()
 app.use(express.json())
 app.use(cors())
@@ -125,5 +125,13 @@ app.put('/todo/update/:id', authentication, (req, res) => {
         });
     }
 })
+
+app.get('/isAuthenticated', authentication, (req, res) => {
+    res.json({
+        message: "Authenticated",
+        user: req.user
+    })
+})
+
 
 app.listen(3000, () => { console.log("listing on port 3000") });

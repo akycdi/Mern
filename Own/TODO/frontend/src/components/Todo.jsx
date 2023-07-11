@@ -18,9 +18,13 @@ function Todo(params) {
             headers: {
                 'Content-Type': 'application/json',
                 "username": "Arun",
-                "Authorization": "Bearer " + token,
+                "Authorization": "Bearer " + localStorage.getItem("token"),
             }
         }).then(todosCallback)
+
+        setTitle(" ");
+        setDescription(" ");
+
     }
 
     return (
@@ -29,6 +33,7 @@ function Todo(params) {
                 display: "flex",
                 justifyContent: "center",
                 alignItems: "center",
+                padding: 30,
             }}>
                 <Card sx={{ minWidth: 500, minheigth: 500 }} style={{
                     width: 400,
@@ -38,11 +43,15 @@ function Todo(params) {
                     display: "flex",
                     justifyContent: "center",
                 }}>
-                    <CardContent>
+                    <CardContent style={{
+                        padding: 10,
+                        margin: 10,
+                    }}>
                         <form>
                             <TextField id={title} label="Title" variant="outlined" value={title} onChange={(e) => setTitle(e.target.value)} type="text" placeholder="Title" />
                             <TextField id={description} label="Description" variant="outlined" value={description} onChange={(e) => setDescription(e.target.value)} type="text" placeholder="Description" />
-                            <br></br><br></br>
+                            <br></br>
+                            <br></br>
                             <Button variant="contained" onClick={createTODO}>Submit</Button>
                         </form>
                     </CardContent>
@@ -56,21 +65,6 @@ function todosCallback(response) {
     response.json().then((data) => {
         console.log(data);
     })
-}
-const token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6IkFydW4iLCJpYXQiOjE2ODg5MzM1NTEsImV4cCI6MTY4OTAxOTk1MX0.t0SZIMwsAFh5OoPA_WmLlyT3Dhi9BLbRHu8d5p-XmdE"
-
-function login() {
-    fetch("http://localhost:3000/login", {
-        method: "POST",
-        body: JSON.stringify({
-            title: "Hello Title",
-            description: "Hello Description"
-        }),
-        headers: {
-            "username": "Arun",
-            "Authorization": "Bearer " + token,
-        }
-    }).then(todosCallback)
 }
 
 export default Todo;

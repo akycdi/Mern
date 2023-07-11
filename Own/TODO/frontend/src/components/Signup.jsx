@@ -33,6 +33,13 @@ function Signup(params) {
             }
         })
     }
+
+    function isAuthenticated(res) {
+        res.json((data) => {
+            console.log(data);
+        })
+    }
+
     if (!localStorage.getItem("token")) {
         return (
 
@@ -51,10 +58,10 @@ function Signup(params) {
 
         )
     }
-    else{
-        return(
+    else {
+        return (
             <div>
-               {navigate('/todo')}
+                {navigate('/todo')}
             </div>
         )
     }

@@ -43,7 +43,7 @@ app.post('/signup', (req, res) => {
     data.id = Date.now()
     let user = USERS.find(x => x.username === data.username)
     if (user) {
-        res.json({
+        res.status(403).json({
             message: "User all ready exsits"
         }).send()
         return

@@ -16,20 +16,33 @@ function Signup() {
                 "username": username,
                 "password": password,
             }
-        }).then(todosCallback)
+        }).then(signupCallback)
     }
 
-    function todosCallback(response) {
-        response.json().then((data, err) => {
-            if (err) {
-                console.log(err);
-            }
-            else {
-                localStorage.setItem("token", data.token)
-                localStorage.setItem("user",username)
-                navigate('/login');
-            }
-        })
+    function signupCallback(response) {
+
+        if (response.status == 403) {
+            alert("User all ready registered go to login")
+            console.log("403");
+        }
+        else {
+            response.json().then((data, err) => {
+                if (err) {
+                    console.log(err);
+                }
+                else {
+                    if (localStorage.getItem("token")) {
+                        localStorage.removeItem("token");
+                        localStorage.removeItem("user");
+                    }
+
+                    localStorage.setItem("token", data.token)
+                    localStorage.setItem("user", username)
+                    console.log("User: " + username + "Token: " + data.token);
+                    navigate('/todo');
+                }
+            })
+        }
     }
 
     return (

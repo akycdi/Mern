@@ -57,7 +57,8 @@ app.post('/signup', (req, res) => {
 
 app.post('/login', authentication, (req, res) => {
     let username = req.headers.username;
-    if (username === req.user.username) {
+    let password = req.headers.password
+    if (username === req.user.username && password == req.user.password) {
         res.json({
             message: 'Login succesfull',
             user: req.user.username

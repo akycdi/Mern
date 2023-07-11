@@ -48,7 +48,7 @@ function Todo(params) {
                         margin: 10,
                     }}>
                         <form>
-                            <TextField id={title} label="Title" variant="outlined" value={title} onChange={(e) => setTitle(e.target.value)} type="text" placeholder="Title" />
+                            <TextField id={title} label="Title" variant="outlined" value={title} onChange={(e) => setTitle(e.target.value) } type="text" placeholder="Title" />
                             <TextField id={description} label="Description" variant="outlined" value={description} onChange={(e) => setDescription(e.target.value)} type="text" placeholder="Description" />
                             <br></br>
                             <br></br>

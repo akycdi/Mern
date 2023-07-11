@@ -1,13 +1,12 @@
 import React, { useState, useEffect } from "react";
 import Button from '@mui/material/Button';
 import { TextField, Card, CardContent, Avatar } from "@mui/material";
-import { Routes, Route, useNavigate } from 'react-router-dom';
+import { Routes, Route, useNavigate, Navigate } from 'react-router-dom';
 import { blue } from "@mui/material/colors";
 
 function Login() {
     const [password, setUsername] = useState("");
     const navigate = useNavigate();
-
     function LoginButton() {
         fetch("http://localhost:3000/login", {
             method: "POST",
@@ -15,23 +14,24 @@ function Login() {
                 "username": localStorage.getItem("user"),
                 "content-type": "application/json",
                 "authorization": "Bearer " + localStorage.getItem("token"),
-                "password":password
+                "password": password
             }
         }).then(loginCallback)
     }
 
     function loginCallback(response) {
-        response.json().then((err, data) => {
-            if (err) {
-                console.log(err);
-            }
-            else {
+        response.json().then((data) => {
+            if (response.ok) {
                 navigate('/todo');
                 console.log(data);
+            } else {
+                console.log(data);
             }
-        })
+        }).catch((err) => {
+            console.log(err);
+        });
     }
-
+    
     if (localStorage.getItem("token")) {
 
     }

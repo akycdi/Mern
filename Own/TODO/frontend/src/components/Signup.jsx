@@ -3,7 +3,6 @@ import Button from '@mui/material/Button';
 import { TextField, Card, CardContent } from "@mui/material";
 import { Routes, Route, useNavigate } from 'react-router-dom';
 
-
 function Signup() {
     const [username, setUsername] = useState("");
     const [password, setPassword] = useState("");
@@ -21,7 +20,7 @@ function Signup() {
 
     function signupCallback(response) {
 
-        if (response.status == 403) {
+        if (response.status === 403) {
             alert("User all ready registered go to login")
             console.log("403");
         }
@@ -38,7 +37,7 @@ function Signup() {
 
                     localStorage.setItem("token", data.token)
                     localStorage.setItem("user", username)
-                    console.log("User: " + username + "Token: " + data.token);
+                    console.log("User: " + username + " Token: " + data.token);
                     navigate('/todo');
                 }
             })

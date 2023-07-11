@@ -128,7 +128,7 @@ app.put('/todo/update/:id', authentication, (req, res) => {
 
 app.get('/isAuthenticated', authentication, (req, res) => {
     res.json({
-        message: "Authenticated",
+        message: true,
         user: req.user
     })
 })

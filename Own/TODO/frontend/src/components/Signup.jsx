@@ -4,11 +4,10 @@ import { TextField, Card, CardContent } from "@mui/material";
 import { Routes, Route, useNavigate } from 'react-router-dom';
 
 
-function Signup(params) {
+function Signup() {
     const [username, setUsername] = useState("");
     const [password, setPassword] = useState("");
     const navigate = useNavigate();
-    let token = "";
 
     function signUp() {
         fetch("http://localhost:3000/signup", {
@@ -26,45 +25,29 @@ function Signup(params) {
                 console.log(err);
             }
             else {
-                token = data.token;
-                localStorage.setItem("token", token)
-                console.log(token);
+                localStorage.setItem("token", data.token)
+                localStorage.setItem("user",username)
                 navigate('/login');
             }
         })
     }
 
-    function isAuthenticated(res) {
-        res.json((data) => {
-            console.log(data);
-        })
-    }
+    return (
 
-    if (!localStorage.getItem("token")) {
-        return (
+        <div>
+            <Card>
+                <CardContent>
+                    <form>
+                        <TextField id={username} label="Username" variant="outlined" value={username} onChange={(e) => setUsername(e.target.value)} type="text" placeholder="Username" />
+                        <TextField id={password} label="Password" variant="outlined" value={password} onChange={(e) => setPassword(e.target.value)} type="text" placeholder="Password" />
+                        <br></br><br></br>
+                        <Button variant="contained" onClick={signUp}>Submit</Button>
+                    </form>
+                </CardContent>
+            </Card>
+        </div>
 
-            <div>
-                <Card>
-                    <CardContent>
-                        <form>
-                            <TextField id={username} label="Username" variant="outlined" value={username} onChange={(e) => setUsername(e.target.value)} type="text" placeholder="Username" />
-                            <TextField id={password} label="Password" variant="outlined" value={password} onChange={(e) => setPassword(e.target.value)} type="text" placeholder="Password" />
-                            <br></br><br></br>
-                            <Button variant="contained" onClick={signUp}>Submit</Button>
-                        </form>
-                    </CardContent>
-                </Card>
-            </div>
-
-        )
-    }
-    else {
-        return (
-            <div>
-                {navigate('/todo')}
-            </div>
-        )
-    }
+    )
 }
 
 

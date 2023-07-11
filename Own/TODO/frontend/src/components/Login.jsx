@@ -5,10 +5,7 @@ import { Routes, Route, useNavigate } from 'react-router-dom';
 
 function Login() {
     const [username, setUsername] = useState("");
-    const [password, setPassword] = useState("");
     const navigate = useNavigate();
-
-    let token = "";
 
     function LoginButton() {
         fetch("http://localhost:3000/login", {
@@ -18,10 +15,10 @@ function Login() {
                 "content-type": "application/json",
                 "authorization": "Bearer " + localStorage.getItem("token"),
             }
-        }).then(todosCallback)
+        }).then(loginCallback)
     }
 
-    function todosCallback(response) {
+    function loginCallback(response) {
         response.json().then((err, data) => {
             if (err) {
                 console.log(err);
@@ -34,11 +31,17 @@ function Login() {
     }
 
     return (
-        <div>
+        <div style={{
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
+            padding: 30,
+        }}>
             <Card>
                 <CardContent>
                     <form>
                         <TextField id={username} label="Username" variant="outlined" value={username} onChange={(e) => setUsername(e.target.value)} type="text" placeholder="Username" />
+                        <br></br>
                         <br></br>
                         <Button variant="contained" onClick={LoginButton}>Submit</Button>
                     </form>

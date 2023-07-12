@@ -1,7 +1,8 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import Button from '@mui/material/Button';
-import { TextField, Card, Typography, CardContent } from "@mui/material";
+import { TextField, Card, CardContent } from "@mui/material";
 
+import DisplayTodo from "./DisplayTodo";
 
 function Todo(params) {
     const [title, setTitle] = useState("");
@@ -36,8 +37,6 @@ function Todo(params) {
                 padding: 30,
             }}>
                 <Card sx={{ minWidth: 500, minheigth: 500 }} style={{
-                    width: 400,
-                    height: 200,
                     padding: 10,
                     marginBottom: 10,
                     display: "flex",
@@ -47,8 +46,9 @@ function Todo(params) {
                         padding: 10,
                         margin: 10,
                     }}>
+                        <DisplayTodo />
                         <form>
-                            <TextField id={title} label="Title" variant="outlined" value={title} onChange={(e) => setTitle(e.target.value) } type="text" placeholder="Title" />
+                            <TextField id={title} label="Title" variant="outlined" value={title} onChange={(e) => setTitle(e.target.value)} type="text" placeholder="Title" />
                             <TextField id={description} label="Description" variant="outlined" value={description} onChange={(e) => setDescription(e.target.value)} type="text" placeholder="Description" />
                             <br></br>
                             <br></br>

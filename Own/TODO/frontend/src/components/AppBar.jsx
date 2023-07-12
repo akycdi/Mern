@@ -18,6 +18,10 @@ function AppBarRender() {
     };
 
     const isLoginPage = location.pathname === '/login';
+    const isTodoPage = location.pathname === '/todo';
+    const isSignUpPage = location.pathname === '/signup';
+
+
 
     return (
         <AppBar position="static">
@@ -25,8 +29,8 @@ function AppBarRender() {
                 <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
                     TODO
                 </Typography>
-                {!isLoginPage && <Button color="inherit" onClick={navigateToSignup}>Signup</Button>}
-                <Button color="inherit" onClick={navigateToLogin}>Login</Button>
+                {!isLoginPage && !isTodoPage && !isSignUpPage && <Button color="inherit" onClick={navigateToSignup}>Signup</Button>}
+                {!isLoginPage && !isTodoPage && <Button color="inherit" onClick={navigateToLogin}>Login</Button>}
             </Toolbar>
         </AppBar>
     );

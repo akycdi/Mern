@@ -81,7 +81,7 @@ app.post('/todo/create', authentication, (req, res) => {
     })
 })
 
-app.get('/todo', authentication, (req, res) => {
+app.get('/todo/getTodos', authentication, (req, res) => {
     res.json({
         todo: TODO
     });

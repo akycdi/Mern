@@ -1,6 +1,6 @@
-import { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 
-function DisplayTodo({ dataChanged }) {
+function DisplayTodo({ dataChanged, setDataChanged }) {
     const [data, setData] = useState([]);
 
     useEffect(() => {
@@ -21,7 +21,11 @@ function DisplayTodo({ dataChanged }) {
                 "content-type": "application/json",
                 authorization: "Bearer " + localStorage.getItem("token"),
             },
-        }).then(getTodosCallBack);
+        })
+            .then(getTodosCallBack)
+            .catch(error => {
+                console.log("Error fetching Todos:", error);
+            });
     }
 
     return (

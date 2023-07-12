@@ -10,29 +10,35 @@ function Todo() {
     const [dataChanged, setDataChanged] = useState(false);
 
     function createTODO() {
-        fetch("http://localhost:3000/todo/create", {
-            method: "POST",
-            body: JSON.stringify({
-                title: title,
-                description: description
-            }),
-            headers: {
-                'Content-Type': 'application/json',
-                "username": "Arun",
-                "Authorization": "Bearer " + localStorage.getItem("token"),
-            }
-        })
-            .then(response => response.json())
-            .then(data => {
-                 console.log(data);
-                if (data) {
-                    setDataChanged(true);
-                    console.log(dataChanged);
-                    setTitle("");
-                    setDescription("");
+        if (title === "" || description === "") {
+            alert("Title or Description cannot be empty");
+        }
+        else {
+
+            fetch("http://localhost:3000/todo/create", {
+                method: "POST",
+                body: JSON.stringify({
+                    title: title,
+                    description: description
+                }),
+                headers: {
+                    'Content-Type': 'application/json',
+                    "username": "Arun",
+                    "Authorization": "Bearer " + localStorage.getItem("token"),
                 }
-            });
+            })
+                .then(response => response.json())
+                .then(data => {
+                    console.log(data);
+                    if (data) {
+                        setDataChanged(true);
+                        console.log(dataChanged);
+                        setTitle("");
+                        setDescription("");
+                    }
+                });
             setDataChanged(false);
+        }
 
     }
 
@@ -54,7 +60,7 @@ function Todo() {
                         padding: 10,
                         margin: 10,
                     }}>
-                        <DisplayTodo dataChanged={dataChanged}/>
+                        <DisplayTodo dataChanged={dataChanged} />
                         <form>
                             <TextField id="title" label="Title" variant="outlined" value={title} onChange={(e) => setTitle(e.target.value)} type="text" placeholder="Title" />
                             <TextField id="description" label="Description" variant="outlined" value={description} onChange={(e) => setDescription(e.target.value)} type="text" placeholder="Description" />

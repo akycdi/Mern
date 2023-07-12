@@ -138,7 +138,7 @@ app.get('/isAuthenticated', authentication, (req, res) => {
         res.json({
             message: true,
             user: req.user.username
-        }).send();
+        })
     }
     else {
         res.status(403).json({
@@ -147,5 +147,10 @@ app.get('/isAuthenticated', authentication, (req, res) => {
     }
 })
 
+app.get('/todo/getNumberOfTodos',authentication, (req, res) => {
+    res.json({
+        count: TODO.length
+    });
+})
 
 app.listen(3000, () => { console.log("listing on port 3000") });

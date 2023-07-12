@@ -4,12 +4,12 @@ import { TextField, Card, CardContent } from "@mui/material";
 
 import DisplayTodo from "./DisplayTodo";
 
-function Todo(params) {
+function Todo() {
     const [title, setTitle] = useState("");
     const [description, setDescription] = useState("");
+    const [dataChanged, setDataChanged] = useState(false);
 
     function createTODO() {
-        console.log(title, description);
         fetch("http://localhost:3000/todo/create", {
             method: "POST",
             body: JSON.stringify({
@@ -21,13 +21,18 @@ function Todo(params) {
                 "username": "Arun",
                 "Authorization": "Bearer " + localStorage.getItem("token"),
             }
-        }).then(todosCallback)
-
-        setTitle(" ");
-        setDescription(" ");
-
+        })
+            .then(response => response.json())
+            .then(data => {
+                console.log(data);
+                if (data.success) {
+                    setDataChanged(true);
+                    setTitle("");
+                    setDescription("");
+                }
+            });
     }
-
+    
     return (
         <div>
             <div style={{
@@ -46,7 +51,7 @@ function Todo(params) {
                         padding: 10,
                         margin: 10,
                     }}>
-                        <DisplayTodo />
+                        <DisplayTodo dataChanged={dataChanged} />
                         <form>
                             <TextField id={title} label="Title" variant="outlined" value={title} onChange={(e) => setTitle(e.target.value)} type="text" placeholder="Title" />
                             <TextField id={description} label="Description" variant="outlined" value={description} onChange={(e) => setDescription(e.target.value)} type="text" placeholder="Description" />
@@ -59,12 +64,6 @@ function Todo(params) {
             </div>
         </div>
     )
-}
-
-function todosCallback(response) {
-    response.json().then((data) => {
-        console.log(data);
-    })
 }
 
 export default Todo;

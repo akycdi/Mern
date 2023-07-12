@@ -14,7 +14,7 @@ function Signup() {
         if (isAuth) {
             navigate('/todo');
         }
-    })
+    }, [isAuth])
 
     function signUp() {
         fetch("http://localhost:3000/signup", {

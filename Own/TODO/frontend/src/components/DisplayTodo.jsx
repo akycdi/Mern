@@ -1,30 +1,39 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 
-function DisplayTodo(props) {
+function DisplayTodo({ dataChanged }) {
+    const [data, setData] = useState([]);
 
-    const todos = useEffect(() => {
-        getTodos()
-    })
+    useEffect(() => {
+        getTodos();
+    }, [dataChanged]);
 
     function getTodosCallBack(res) {
-        res.json().then(data => {
-            console.log(data);
-        })
+        res.json().then((data) => {
+            setData(data.todo);
+        });
     }
 
     function getTodos() {
-        fetch('http://localhost:3000/todo/getTodos', {
+        fetch("http://localhost:3000/todo/getTodos", {
             method: "GET",
             headers: {
-                "username": localStorage.getItem("user"),
+                username: localStorage.getItem("user"),
                 "content-type": "application/json",
-                "authorization": "Bearer " + localStorage.getItem("token"),
-            }
-        }).then(getTodosCallBack)
+                authorization: "Bearer " + localStorage.getItem("token"),
+            },
+        }).then(getTodosCallBack);
     }
 
-    return (<div>
-        <h1> Hello </h1>
-    </div>)
+    return (
+        <div>
+            {data.map((todo) => (
+                <div key={todo.id}>
+                    <h3>{todo.title}</h3>
+                    <p>{todo.description}</p>
+                </div>
+            ))}
+        </div>
+    );
 }
+
 export default DisplayTodo;

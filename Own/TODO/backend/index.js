@@ -75,9 +75,7 @@ app.post('/todo/create', authentication, (req, res) => {
     data.id = Date.now();
     TODO.push(data);
     res.json({
-        message: 'Added Todo',
-        id: data.id,
-        user: req.user
+        message: 'Added Todo'
     })
 })
 
@@ -129,18 +127,24 @@ app.get('/isAuthenticated', authentication, (req, res) => {
     let username = req.user.username;
     let password = req.user.password;
 
+    let isUser = false;
+
     USERS.forEach(element => {
         if (element.username === username && element.password === password) {
-            res.json({
-                message: true,
-                user: req.user
-            }).send();
+            isUser = true;
         }
     })
-    res.status(403).json({
-        message: false,
-        user: req.user
-    });
+    if (isUser) {
+        res.json({
+            message: true,
+            user: req.user.username
+        }).send();
+    }
+    else {
+        res.status(403).json({
+            message: false
+        });
+    }
 })
 
 

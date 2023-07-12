@@ -24,13 +24,16 @@ function Todo() {
         })
             .then(response => response.json())
             .then(data => {
-                console.log(data);
-                if (data.success) {
-                    setDataChanged(prevDataChanged => !prevDataChanged);
+                 console.log(data);
+                if (data) {
+                    setDataChanged(true);
+                    console.log(dataChanged);
                     setTitle("");
                     setDescription("");
                 }
             });
+            setDataChanged(false);
+
     }
 
     return (
@@ -51,7 +54,7 @@ function Todo() {
                         padding: 10,
                         margin: 10,
                     }}>
-                        <DisplayTodo dataChanged={dataChanged} setDataChanged={setDataChanged} />
+                        <DisplayTodo dataChanged={dataChanged}/>
                         <form>
                             <TextField id="title" label="Title" variant="outlined" value={title} onChange={(e) => setTitle(e.target.value)} type="text" placeholder="Title" />
                             <TextField id="description" label="Description" variant="outlined" value={description} onChange={(e) => setDescription(e.target.value)} type="text" placeholder="Description" />

@@ -3,7 +3,28 @@ const bodyParser = require('body-parser');
 const jwt = require('jsonwebtoken')
 require('dotenv').config()
 const cors = require('cors')
+
+
+const routes = require("./Routes/user.routes")
+
 const app = express()
+const mongoose = require('mongoose')
+
+app.use('/user',routes)
+
+
+// const mongoString = process.env.DATABASE_URL
+// mongoose.connect(mongoString);
+// const database = mongoose.connection
+
+// database.on('error', (error) => {
+//     console.log(error)
+// })
+
+// database.once('connected', () => {
+//     console.log('Database Connected');
+// })
+
 app.use(express.json())
 app.use(cors())
 app.use(bodyParser.json());
@@ -35,7 +56,7 @@ function authentication(req, res, next) {
     })
 }
 
-app.post('/signup', (req, res) => {
+app.post('/user/signup', (req, res) => {
     let data = req.headers;
     data.id = Date.now()
     let user = USERS.find(x => x.username === data.username)
@@ -54,7 +75,7 @@ app.post('/signup', (req, res) => {
     })
 })
 
-app.post('/login', authentication, (req, res) => {
+app.post('/user/login', authentication, (req, res) => {
     let username = req.headers.username;
     let password = req.headers.password
     if (username === req.user.username && password == req.user.password) {

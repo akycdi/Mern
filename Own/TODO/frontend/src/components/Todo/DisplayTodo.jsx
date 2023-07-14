@@ -35,10 +35,6 @@ function DisplayTodo({ dataChanged, setDataChanged }) {
             });
     }
 
-    // function editTodo(id) {
-    //     console.log(id);
-    // }
-
     function getNumberOfTodos() {
         fetch("http://localhost:3000/todo/getNumberOfTodos", {
             method: "GET",

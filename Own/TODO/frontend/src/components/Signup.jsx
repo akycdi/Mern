@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import Button from '@mui/material/Button';
 import { TextField, Card, CardContent } from "@mui/material";
-import { Routes, Route, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 
 function Signup() {
     const [username, setUsername] = useState("");

@@ -1,7 +1,7 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import Button from '@mui/material/Button';
 import { TextField, Card, CardContent, Avatar } from "@mui/material";
-import { Routes, Route, useNavigate, Navigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { blue } from "@mui/material/colors";
 
 function Login() {
@@ -31,7 +31,7 @@ function Login() {
             console.log(err);
         });
     }
-    
+
     if (localStorage.getItem("token")) {
 
     }

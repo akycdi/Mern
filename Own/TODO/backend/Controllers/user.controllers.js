@@ -1,5 +1,10 @@
+const USERS = [];
+const jwt = require("jsonwebtoken");
 
-const usersignup = (req, res, next) => {
+const createToken = (data) => {
+    return jwt.sign({ username: data.username, password: data.password }, process.env.secretkey, { expiresIn: 86400 });
+}
+const userSignup = (req, res) => {
     let data = req.headers;
     data.id = Date.now()
     let user = USERS.find(x => x.username === data.username)
@@ -18,11 +23,23 @@ const usersignup = (req, res, next) => {
     })
 }
 
-const userLogin = (req, res, next) => {
-
+const userLogin = (req, res) => {
+    let username = req.headers.username;
+    let password = req.headers.password
+    if (username === req.user.username && password == req.user.password) {
+        res.json({
+            message: 'Login succesfull',
+            user: req.user.username
+        }).send()
+    }
+    else {
+        res.status(403).json({
+            message: " Invalid username"
+        })
+    }
 }
 
 module.exports = {
-    usersignup,
+    userSignup,
     userLogin
 }

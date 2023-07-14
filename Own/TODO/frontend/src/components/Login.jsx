@@ -8,7 +8,7 @@ function Login() {
     const [password, setUsername] = useState("");
     const navigate = useNavigate();
     function LoginButton() {
-        fetch("http://localhost:3000/login", {
+        fetch("http://localhost:3000/user/login", {
             method: "POST",
             headers: {
                 "username": localStorage.getItem("user"),

@@ -17,7 +17,7 @@ function Signup() {
     }, [isAuth])
 
     function signUp() {
-        fetch("http://localhost:3000/signup", {
+        fetch("http://localhost:3000/user/signup", {
             method: "POST",
             headers: {
                 "username": username,
@@ -45,7 +45,6 @@ function Signup() {
 
                     localStorage.setItem("token", data.token)
                     localStorage.setItem("user", username)
-                    console.log("User: " + username + " Token: " + data.token);
                     navigate('/todo');
                 }
             })

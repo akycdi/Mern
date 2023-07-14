@@ -7,7 +7,7 @@ module.exports = function (req, res, next) {
     }
 
     const token = auth.split(' ')[1]
-    jwt.verify(token, secretkey, (err, user) => {
+    jwt.verify(token, process.env.secretkey, (err, user) => {
         if (err) {
             return res.status(403).json({
                 message: "Authentication failed"

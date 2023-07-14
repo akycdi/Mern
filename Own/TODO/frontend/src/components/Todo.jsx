@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import Button from '@mui/material/Button';
 import { TextField, Card, CardContent } from "@mui/material";
 
@@ -29,17 +29,14 @@ function Todo() {
             })
                 .then(response => response.json())
                 .then(data => {
-                    console.log(data);
                     if (data) {
                         setDataChanged(true);
-                        console.log(dataChanged);
                         setTitle("");
                         setDescription("");
                     }
                 });
             setDataChanged(false);
         }
-
     }
 
     return (
@@ -58,16 +55,18 @@ function Todo() {
                 }}>
                     <CardContent style={{
                         padding: 10,
-                        margin: 10,
+                        margin: 10
                     }}>
                         <DisplayTodo dataChanged={dataChanged} />
-                        <form>
-                            <TextField id="title" label="Title" variant="outlined" value={title} onChange={(e) => setTitle(e.target.value)} type="text" placeholder="Title" />
-                            <TextField id="description" label="Description" variant="outlined" value={description} onChange={(e) => setDescription(e.target.value)} type="text" placeholder="Description" />
-                            <br></br>
-                            <br></br>
-                            <Button variant="contained" onClick={createTODO}>Submit</Button>
-                        </form>
+                        <div>
+                            <form >
+                                <TextField id="title" label="Title" variant="outlined" value={title} onChange={(e) => setTitle(e.target.value)} type="text" placeholder="Title" />
+                                <TextField id="description" label="Description" variant="outlined" value={description} onChange={(e) => setDescription(e.target.value)} type="text" placeholder="Description" />
+                                <br></br>
+                                <br></br>
+                                <Button variant="contained" onClick={createTODO}>Submit</Button>
+                            </form>
+                        </div>
                     </CardContent>
                 </Card>
             </div>

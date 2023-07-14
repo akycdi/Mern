@@ -12,9 +12,8 @@ function App() {
     <div>
       <Router>
         <AppBarRender />
-        <Home />
         <Routes>
-          {/* <Route path="/" element={<Signup />} /> */}
+          <Route path="/" element={<Home />} />
           <Route path="/signup" element={<Signup />} />
           <Route path="/todo" element={<Todo />} />
           <Route path="/login" element={<Login />} />

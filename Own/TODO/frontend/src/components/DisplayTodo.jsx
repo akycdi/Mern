@@ -1,7 +1,6 @@
-import { Button, Typography } from "@mui/material";
+import { Typography } from "@mui/material";
 import React, { useEffect, useState } from "react";
-import HighlightOffIcon from '@mui/icons-material/HighlightOff';
-import EditIcon from '@mui/icons-material/Edit';
+import SingleTODO from "./SingleTODO";
 
 function DisplayTodo({ dataChanged, setDataChanged }) {
     const [data, setData] = useState([]);
@@ -36,26 +35,9 @@ function DisplayTodo({ dataChanged, setDataChanged }) {
             });
     }
 
-    function deleteTODO(id) {
-        fetch(`http://localhost:3000/todo/delete/${id}`, {
-            method: "DELETE",
-            headers: {
-                username: localStorage.getItem("user"),
-                "content-type": "application/json",
-                authorization: "Bearer " + localStorage.getItem("token"),
-            },
-        }).then((res) => res.json()).then((data) => {
-            setData(data.TODO)
-            setCounter(data.TODO.length);
-            console.log(data.TODO.length);
-        }).catch((error) => {
-            console.log("Error deleting TODO:", error);
-        });
-    }
-
-    function editTodo(id) {
-        console.log(id);
-    }
+    // function editTodo(id) {
+    //     console.log(id);
+    // }
 
     function getNumberOfTodos() {
         fetch("http://localhost:3000/todo/getNumberOfTodos", {
@@ -69,7 +51,6 @@ function DisplayTodo({ dataChanged, setDataChanged }) {
             .then((res) => res.json())
             .then((data) => {
                 setCounter(data.count);
-                // console.log(data.count);
             })
             .catch((error) => {
                 console.log("Error fetching Todos:", error);
@@ -80,34 +61,13 @@ function DisplayTodo({ dataChanged, setDataChanged }) {
         <div>
             <div style={{
                 display: "flex",
-                justifyContent: "centre",
+                justifyContent: "center",
                 alignItems: "center",
                 padding: 10,
             }}>
                 <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>You have {counter} Todos</Typography>
             </div>
-            {data.map((todo) => (
-                <div
-                    style={{
-                        display: "flex",
-                        padding: 5,
-                        justifyContent: "space-between",
-                        alignItems: "center"
-                    }}
-                    key={todo.id}
-                >
-                    <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
-                        {todo.title}
-                    </Typography>
-                    <HighlightOffIcon
-                        size="medium"
-                        variant="contained"
-                        onClick={() => deleteTODO(todo.id)}
-                    >
-                    </HighlightOffIcon>
-                    {/* <EditIcon size="small" variant="contained" onClick={() => editTodo(todo.id)}></EditIcon> */}
-                </div>
-            ))}
+            <SingleTODO data={data} counter={counter} setData={setData} setCounter={setCounter} />
         </div>
     );
 }

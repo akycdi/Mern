@@ -1,5 +1,5 @@
 import { AppBar, Button, Toolbar, Typography } from "@mui/material";
-import { Routes, Route, useNavigate, useLocation } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 
 function AppBarRender() {
     const navigate = useNavigate();
@@ -12,16 +12,10 @@ function AppBarRender() {
     const navigateToLogin = () => {
         navigate('/login');
     };
-
-    const navigateToTodo = () => {
-        navigate('/todo');
-    };
-
+    
     const isLoginPage = location.pathname === '/login';
     const isTodoPage = location.pathname === '/todo';
     const isSignUpPage = location.pathname === '/signup';
-
-
 
     return (
         <AppBar position="static">

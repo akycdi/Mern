@@ -86,7 +86,7 @@ function Signup() {
                 <CardContent>
                     <form>
                         <TextField id={username} label="Username" variant="outlined" value={username} onChange={(e) => setUsername(e.target.value)} type="text" placeholder="Username" />
-                        <TextField id={password} label="Password" variant="outlined" value={password} onChange={(e) => setPassword(e.target.value)} type="text" placeholder="Password" />
+                        <TextField id={password} label="Password" variant="outlined" value={password} onChange={(e) => setPassword(e.target.value)} type="password" placeholder="Password" />
                         <br></br><br></br>
                         <Button variant="contained" onClick={signUp}>Submit</Button>
                     </form>

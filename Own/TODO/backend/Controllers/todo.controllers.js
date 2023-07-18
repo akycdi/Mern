@@ -3,11 +3,11 @@ let TODO = []
 const user = require('../Models/user')
 
 const createTodo = async (req, res) => {
-    const { title, description } = req.body;
+    const { title } = req.body;
 
-    if (!title || !description) {
+    if (!title) {
         res.status(404).json({
-            message: "Title or description Null"
+            message: "Title is Null"
         })
     }
     try {
@@ -17,7 +17,7 @@ const createTodo = async (req, res) => {
                 message: "No User"
             })
         }
-        getUser.todo.push({ id: Date.now(), title, description })
+        getUser.todo.push({ id: Date.now(), title })
         await getUser.save();
 
         res.json({
@@ -74,7 +74,7 @@ const deleteTodo = async (req, res) => {
 
 const updateTodo = async (req, res) => {
     const id = parseInt(req.params.id);
-    const { title, description } = req.body;
+    const { title } = req.body;
     const getUser = await user.findOne({ username: req.user.username })
     if (!getUser) {
         return res.status(404).json({
@@ -91,7 +91,7 @@ const updateTodo = async (req, res) => {
             }
         }
         getUser.todo[index].title = title ? title : getUser.todo[index].title;
-        getUser.todo[index].description = description ? description : getUser.todo[index].description;
+        // getUser.todo[index].description = description ? description : getUser.todo[index].description;
         getUser.save();
         res.json({
             TODO: todos

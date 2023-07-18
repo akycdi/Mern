@@ -13,7 +13,7 @@ function Login() {
             headers: {
                 'Accept': 'application/json',
                 'Content-Type': 'application/json'
-              },
+            },
             body: JSON.stringify({
                 "username": localStorage.getItem("user"),
                 "password": password
@@ -24,9 +24,8 @@ function Login() {
     function loginCallback(response) {
         response.json().then((data) => {
             if (response.ok) {
-                localStorage.setItem("token",data.token)
+                localStorage.setItem("token", data.token)
                 navigate('/todo');
-                console.log(data);
             } else {
                 console.log(data);
             }
@@ -58,7 +57,7 @@ function Login() {
                         </div>
                         <br>
                         </br>
-                        <TextField id={password} label="Password" variant="outlined" value={password} onChange={(e) => setUsername(e.target.value)} type="text" placeholder="Password" />
+                        <TextField id={password} label="Password" variant="outlined" value={password} onChange={(e) => setUsername(e.target.value)} type="Password" placeholder="Password" />
                         <br></br>
                         <br></br>
                         <div style={{

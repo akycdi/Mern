@@ -2,7 +2,7 @@ import { Typography } from "@mui/material";
 import React, { useEffect, useState } from "react";
 import SingleTODO from "./SingleTODO";
 
-function DisplayTodo({ dataChanged, setDataChanged }) {
+function DisplayTodo({ dataChanged }) {
     const [data, setData] = useState([]);
     const [counter, setCounter] = useState(0);
 
@@ -24,8 +24,8 @@ function DisplayTodo({ dataChanged, setDataChanged }) {
         fetch("http://localhost:3000/todo/getTodos", {
             method: "GET",
             headers: {
-                username: localStorage.getItem("user"),
                 "content-type": "application/json",
+                username: localStorage.getItem("user"),
                 authorization: "Bearer " + localStorage.getItem("token"),
             },
         })

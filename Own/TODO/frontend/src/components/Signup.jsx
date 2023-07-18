@@ -38,14 +38,8 @@ function Signup() {
                     console.log(err);
                 }
                 else {
-                    if (localStorage.getItem("token")) {
-                        localStorage.removeItem("token");
-                        localStorage.removeItem("user");
-                    }
-
-                    localStorage.setItem("token", data.token)
                     localStorage.setItem("user", username)
-                    navigate('/todo');
+                    navigate('/login');
                 }
             })
         }

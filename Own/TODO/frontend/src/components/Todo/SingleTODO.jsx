@@ -34,7 +34,7 @@ function SingleTODO(props) {
                     key={todo.id}>
                     <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>{todo.title}</Typography>
                     <div>
-                        <EditIcon color="primary" size="large" ></EditIcon>
+                        {/* <EditIcon color="primary" size="large" ></EditIcon> */}
                         <HighlightOffIcon color="primary" size="medium" onClick={() => deleteTODO(todo.id)} />
                     </div>
                 </div>

@@ -23,7 +23,6 @@ function Todo() {
                 }),
                 headers: {
                     'Content-Type': 'application/json',
-                    "username": "Arun",
                     "Authorization": "Bearer " + localStorage.getItem("token"),
                 }
             })
@@ -57,7 +56,6 @@ function Todo() {
                         padding: 10,
                         margin: 10
                     }}>
-                        <DisplayTodo dataChanged={dataChanged} />
                         <div>
                             <form >
                                 <TextField id="title" label="Title" variant="outlined" value={title} onChange={(e) => setTitle(e.target.value)} type="text" placeholder="Title" />
@@ -66,6 +64,7 @@ function Todo() {
                                 <br></br>
                                 <Button variant="contained" onClick={createTODO}>Submit</Button>
                             </form>
+                            <DisplayTodo dataChanged={dataChanged} />
                         </div>
                     </CardContent>
                 </Card>

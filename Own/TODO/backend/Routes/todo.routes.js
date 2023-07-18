@@ -2,7 +2,7 @@ const express = require('express');
 const router = express.Router()
 
 const todoController = require('../Controllers/todo.controllers');
-const auth = require('../Middlerware/checkAuth.middleware')
+const auth = require('../Middleware/checkAuth.middleware')
 
 router.post("/create", auth, todoController.createTodo)
 router.get("/getTodos", auth, todoController.getTodos)

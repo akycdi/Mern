@@ -1,6 +1,5 @@
 import { Typography, TextField } from "@mui/material";
 import HighlightOffIcon from '@mui/icons-material/HighlightOff';
-import EditIcon from '@mui/icons-material/Edit';
 import { useState } from "react";
 
 function SingleTODO(props) {

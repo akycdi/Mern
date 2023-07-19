@@ -40,11 +40,7 @@ function Login() {
             console.log(err);
         });
     }
-
-    if (localStorage.getItem("token")) {
-
-    }
-
+    
     return (
         <div style={{
             display: "flex",

@@ -2,12 +2,19 @@ import React, { useState } from "react";
 import Button from '@mui/material/Button';
 import { TextField, Card, CardContent, Avatar } from "@mui/material";
 import { useNavigate } from 'react-router-dom';
-import { blue } from "@mui/material/colors";
+import AvatarR from "../Login/Avatar";
 
 function Login() {
-    const [password, setUsername] = useState("");
+    const [password, setPassword] = useState("");
+    const [username, setUsername] = useState("");
+
     const navigate = useNavigate();
+
     function LoginButton() {
+
+        if (!localStorage.getItem("user")) {
+            localStorage.setItem("user", username)
+        }
         fetch("http://localhost:3000/user/login", {
             method: "POST",
             headers: {
@@ -47,17 +54,16 @@ function Login() {
         }}>
             <Card>
                 <CardContent>
-                    <form>
+                    <form >
                         <div style={{
                             display: "flex",
                             justifyContent: "center",
                             alignItems: "center"
                         }}>
-                            <Avatar sx={{ width: 100, height: 100, bgcolor: blue[500] }}>{localStorage.getItem("user")}</Avatar>
+                            <AvatarR username={username} setUsername={setUsername} />
                         </div>
-                        <br>
-                        </br>
-                        <TextField id={password} label="Password" variant="outlined" value={password} onChange={(e) => setUsername(e.target.value)} type="Password" placeholder="Password" />
+                        <br></br>
+                        <TextField id={password} label="Password" variant="outlined" value={password} onChange={(e) => setPassword(e.target.value)} type="Password" placeholder="Password" />
                         <br></br>
                         <br></br>
                         <div style={{

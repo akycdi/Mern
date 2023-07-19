@@ -57,11 +57,12 @@ function Todo() {
                         margin: 10
                     }}>
                         <div>
-                            <form >
+                            <form style={{
+                                display : "flex",
+                                margin : 20
+                            }}>
                                 <TextField id="title" label="Title" variant="outlined" value={title} onChange={(e) => setTitle(e.target.value)} type="text" placeholder="Title" />
                                 {/* <TextField id="description" label="Description" variant="outlined" value={description} onChange={(e) => setDescription(e.target.value)} type="text" placeholder="Description" /> */}
-                                <br></br>
-                                <br></br>
                                 <Button variant="contained" onClick={createTODO}>Submit</Button>
                             </form>
                             <DisplayTodo dataChanged={dataChanged} />
